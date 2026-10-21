@@ -1,0 +1,14 @@
+name: fCustomItems
+main: pt.flawless.fcustomitems.FCustomItems
+version: 1.0
+description: Itens personalizados guardados e dados por comando
+depend: [fAPI]
+commands:
+  customitem:
+    description: Gere itens personalizados
+    usage: /<command> help
+    permission: fcustomitems.admin
+permissions:
+  fcustomitems.admin:
+    description: Usar /customitem (subcomandos give e guardar)
+    default: op
