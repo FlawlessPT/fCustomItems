@@ -2,6 +2,8 @@ package pt.flawless.fcustomitems;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,8 +77,8 @@ final class CustomItemCommand implements TabExecutor {
             } catch (NumberFormatException e) {
                 qty = 0;
             }
-            if (qty < 1) {
-                sender.sendMessage("§cA quantidade tem de ser um inteiro maior ou igual a 1.");
+            if (qty < 1 || qty > 2304) {
+                sender.sendMessage("§cA quantidade tem de ser um inteiro entre 1 e 2304.");
                 return;
             }
         }
@@ -128,7 +130,15 @@ final class CustomItemCommand implements TabExecutor {
             return;
         }
         File file = new File(itemsDir, "guardados.yml");
-        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration yaml = new YamlConfiguration();
+        if (file.exists()) {
+            try {
+                yaml.load(file);
+            } catch (Exception e) {
+                sender.sendMessage("§cguardados.yml inválido, nada foi escrito: " + e.getMessage());
+                return;
+            }
+        }
         if (yaml.contains(id)) {
             sender.sendMessage("§cO id '" + id + "' já está em guardados.yml (inválido?). Escolhe outro.");
             return;
@@ -137,7 +147,9 @@ final class CustomItemCommand implements TabExecutor {
         ItemDefinition.write(section, hand);
         try {
             itemsDir.mkdirs();
-            yaml.save(file);
+            File tmp = new File(itemsDir, "guardados.yml.tmp");
+            yaml.save(tmp);
+            Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             sender.sendMessage("§cErro ao gravar guardados.yml: " + e.getMessage());
             return;

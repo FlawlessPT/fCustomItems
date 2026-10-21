@@ -9,7 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -103,7 +105,7 @@ final class ItemDefinition {
         ItemMeta meta = item.getItemMeta();
         boolean special = meta instanceof PotionMeta || meta instanceof BookMeta || meta instanceof SkullMeta
                 || meta instanceof EnchantmentStorageMeta || meta instanceof LeatherArmorMeta
-                || meta instanceof FireworkMeta || meta instanceof MapMeta;
+                || meta instanceof FireworkMeta || meta instanceof BannerMeta || meta instanceof FireworkEffectMeta || meta instanceof MapMeta;
         if (special) {
             target.set("item", item);
             return;

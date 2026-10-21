@@ -6,3 +6,5 @@
 - Atributos e flags de item (`ItemFlag`, modificadores de atributos).
 - Cor de cabedal (`LeatherArmorMeta`) em campos legíveis; hoje usa `item:`.
 - Ids numéricos de material não são suportados (só nomes Bukkit 1.8).
+- `&` literal em nomes volta como cor ao recarregar.
+- `ItemRegistry` sem sincronização (só thread principal).
