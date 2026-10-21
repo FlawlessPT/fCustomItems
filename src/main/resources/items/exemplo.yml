@@ -1,0 +1,8 @@
+espada_divina:
+  material: DIAMOND_SWORD
+  nome: "&bEspada Divina"
+  lore:
+    - "&7Forjada pelos deuses"
+  encantamentos:
+    DAMAGE_ALL: 5
+    FIRE_ASPECT: 2
