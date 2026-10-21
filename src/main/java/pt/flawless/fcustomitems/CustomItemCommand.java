@@ -23,7 +23,7 @@ import pt.flawless.fapi.messages.Messages;
 final class CustomItemCommand implements TabExecutor {
 
     private static final String USE_HELP = "Uso: /customitem help";
-    private static final List<String> SUBS = List.of("give", "guardar", "help");
+    private static final List<String> SUBS = List.of("give", "criar", "help");
 
     private final ItemRegistry registry;
     private final File itemsDir;
@@ -46,11 +46,11 @@ final class CustomItemCommand implements TabExecutor {
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "help" -> {
                 sender.sendMessage("§e/customitem give <jogador> <id> [qtd] §7- Dá um item custom a um jogador");
-                sender.sendMessage("§e/customitem guardar <id> §7- Guarda o item da mão como item custom");
+                sender.sendMessage("§e/customitem criar <id> §7- Guarda o item da mão como item custom");
                 sender.sendMessage("§e/customitem help §7- Mostra esta lista");
             }
             case "give" -> give(sender, args);
-            case "guardar" -> guardar(sender, args);
+            case "criar", "create" -> criar(sender, args);
             default -> sender.sendMessage("§c" + USE_HELP);
         }
         return true;
@@ -106,13 +106,13 @@ final class CustomItemCommand implements TabExecutor {
         sender.sendMessage("§aDeste " + total + "x '" + args[2] + "' a " + target.getName() + ".");
     }
 
-    private void guardar(CommandSender sender, String[] args) {
+    private void criar(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
             sender.sendMessage("§cSó jogadores podem usar este comando.");
             return;
         }
         if (args.length != 2) {
-            sender.sendMessage("§cUso: /customitem guardar <id>");
+            sender.sendMessage("§cUso: /customitem criar <id>");
             return;
         }
         String id = args[1];
