@@ -15,6 +15,9 @@ public class FCustomItems extends JavaPlugin {
         }
         ItemRegistry registry = new ItemRegistry(getLogger());
         registry.load(dir);
+        CustomItemCommand command = new CustomItemCommand(registry, dir);
+        getCommand("customitem").setExecutor(command);
+        getCommand("customitem").setTabCompleter(command);
         getServer().getServicesManager().register(ItemsApi.class, registry, this, ServicePriority.Normal);
         getLogger().info(registry.size() + " itens carregados.");
     }
