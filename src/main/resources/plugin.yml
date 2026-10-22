@@ -10,5 +10,5 @@ commands:
     permission: fcustomitems.admin
 permissions:
   fcustomitems.admin:
-    description: Usar /customitem (subcomandos give e criar)
+    description: Usar /customitem (subcomandos give, criar e listar)
     default: op
