@@ -23,7 +23,6 @@ import pt.flawless.fapi.messages.Messages;
 final class CustomItemCommand implements TabExecutor {
 
     private static final String USE_HELP = "Uso: /customitem help";
-    private static final int PAGE_SIZE = 10;
     private static final List<String> SUBS = List.of("give", "criar", "listar", "help");
 
     private final ItemRegistry registry;
@@ -48,7 +47,7 @@ final class CustomItemCommand implements TabExecutor {
             case "help" -> {
                 sender.sendMessage("§e/customitem give <jogador> <id> [qtd] §7- Dá um item custom a um jogador");
                 sender.sendMessage("§e/customitem criar <id> §7- Guarda o item da mão como item custom");
-                sender.sendMessage("§e/customitem listar [página] §7- Lista os itens custom");
+                sender.sendMessage("§e/customitem listar [página] §7- Abre o menu dos itens custom");
                 sender.sendMessage("§e/customitem help §7- Mostra esta lista");
             }
             case "give" -> give(sender, args);
@@ -167,17 +166,14 @@ final class CustomItemCommand implements TabExecutor {
     }
 
     private void listar(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage("§cSó jogadores podem usar este comando.");
+            return;
+        }
         if (args.length > 2) {
             sender.sendMessage("§cUso: /customitem listar [página]");
             return;
         }
-        List<String> ids = new ArrayList<>(registry.ids());
-        if (ids.isEmpty()) {
-            sender.sendMessage("§cNão há itens custom.");
-            return;
-        }
-        Collections.sort(ids, String.CASE_INSENSITIVE_ORDER);
-        int pages = (ids.size() + PAGE_SIZE - 1) / PAGE_SIZE;
         int page = 1;
         if (args.length == 2) {
             try {
@@ -185,18 +181,12 @@ final class CustomItemCommand implements TabExecutor {
             } catch (NumberFormatException e) {
                 page = 0;
             }
-            if (page < 1 || page > pages) {
-                sender.sendMessage("§cPágina inválida (1-" + pages + ").");
+            if (page < 1) {
+                sender.sendMessage("§cA página tem de ser um inteiro a partir de 1.");
                 return;
             }
         }
-        sender.sendMessage("§7Itens custom (" + ids.size() + ") - página " + page + "/" + pages);
-        for (String id : ids.subList((page - 1) * PAGE_SIZE, Math.min(ids.size(), page * PAGE_SIZE))) {
-            sender.sendMessage("§e- " + id);
-        }
-        if (page < pages) {
-            sender.sendMessage("§7/customitem listar " + (page + 1) + " para a seguinte");
-        }
+        new ItemsMenu(registry, page).open(player);
     }
 
     @Override
