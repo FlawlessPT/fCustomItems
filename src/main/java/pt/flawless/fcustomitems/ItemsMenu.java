@@ -40,7 +40,7 @@ final class ItemsMenu implements InventoryHolder {
         this.page = Math.max(1, Math.min(requestedPage, pages));
         this.inventory = new FInventory(this, FInventorySize.SIZE_54, "§8Itens custom " + page + "/" + pages).getInventory();
         // nome " " (espaço): o Bukkit 1.8 aceita e o tooltip fica vazio
-        ItemStack glass = new FItemStack(Material.STAINED_GLASS_PANE, 1).setDisplayName(" ").setDurability((short) 7).createItem();
+        ItemStack glass = new FItemStack(Material.GRAY_STAINED_GLASS_PANE, 1).setDisplayName(" ").createItem();
         for (int i = 0; i < SIZE; i++) {
             if (!INNER.contains(i)) {
                 inventory.setItem(i, glass);

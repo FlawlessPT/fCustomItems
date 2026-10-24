@@ -71,7 +71,10 @@ final class ItemDefinition {
             log.warning("fCustomItems: item '" + id + "' ignorado: material não pode ser AIR");
             return null;
         }
-        ItemStack item = new ItemStack(material, 1, (short) s.getInt("data", 0));
+        if (s.contains("data")) {
+            log.warning("fCustomItems: item '" + id + "': 'data' já não existe, usa o material com cor");
+        }
+        ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             if (s.isString("nome")) {
@@ -112,7 +115,6 @@ final class ItemDefinition {
         }
         target.set("material", item.getType().name());
         target.set("quantidade", item.getAmount());
-        target.set("data", (int) item.getDurability());
         if (meta != null) {
             if (meta.hasDisplayName()) {
                 target.set("nome", uncolor(meta.getDisplayName()));

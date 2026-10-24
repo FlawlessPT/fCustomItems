@@ -1,35 +1,35 @@
 package pt.flawless.fcustomitems;
 
 import java.util.Optional;
-import net.minecraft.server.v1_8_R1.NBTTagCompound;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
-/** Marca o id do item custom no NBT do item. */
+/** Marca o id do item custom no PersistentDataContainer da meta do item. */
 final class ItemMark {
 
-    static final String KEY = "fcustomitems_id";
+    static final NamespacedKey KEY = new NamespacedKey("fcustomitems", "id");
 
     private ItemMark() {
     }
 
     static ItemStack mark(ItemStack item, String id) {
-        net.minecraft.server.v1_8_R1.ItemStack nms = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound tag = nms.getTag() != null ? nms.getTag() : new NBTTagCompound();
-        tag.setString(KEY, id);
-        nms.setTag(tag);
-        return CraftItemStack.asBukkitCopy(nms);
+        ItemStack copy = item.clone();
+        ItemMeta meta = copy.getItemMeta();
+        if (meta == null) {
+            return copy;
+        }
+        meta.getPersistentDataContainer().set(KEY, PersistentDataType.STRING, id);
+        copy.setItemMeta(meta);
+        return copy;
     }
 
     static Optional<String> read(ItemStack item) {
-        if (item == null || item.getType() == Material.AIR) {
+        if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) {
             return Optional.empty();
         }
-        NBTTagCompound tag = CraftItemStack.asNMSCopy(item).getTag();
-        if (tag == null || !tag.hasKey(KEY)) {
-            return Optional.empty();
-        }
-        return Optional.of(tag.getString(KEY));
+        return Optional.ofNullable(item.getItemMeta().getPersistentDataContainer().get(KEY, PersistentDataType.STRING));
     }
 }

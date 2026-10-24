@@ -126,7 +126,7 @@ final class CustomItemCommand implements TabExecutor {
             sender.sendMessage("§cJá existe um item com o id '" + id + "'.");
             return;
         }
-        ItemStack hand = player.getItemInHand();
+        ItemStack hand = player.getInventory().getItemInMainHand();
         if (hand == null || hand.getType() == Material.AIR) {
             sender.sendMessage("§cSegura um item na mão.");
             return;

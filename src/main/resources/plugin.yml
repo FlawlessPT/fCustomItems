@@ -1,6 +1,7 @@
 name: fCustomItems
 main: pt.flawless.fcustomitems.FCustomItems
 version: 1.0
+api-version: '1.21'
 description: Itens personalizados guardados e dados por comando
 depend: [fAPI]
 commands:
